@@ -163,6 +163,10 @@ int NoeudInstEcrire::executer(){
 
 NoeudInstLire::NoeudInstLire () {}
 
+void NoeudInstLire::ajouterVariable(Noeud *var) {
+    m_variables.push_back(var);
+}
+
 int NoeudInstLire::executer() {
 
     int var;
@@ -172,4 +176,5 @@ int NoeudInstLire::executer() {
         ((SymboleValue*) variable)->setValeur(var);
     }
 
+    return 0;
 }
