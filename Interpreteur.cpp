@@ -1,4 +1,4 @@
-    #include "Interpreteur.h"
+#include "Interpreteur.h"
 #include <stdlib.h>
 #include <iostream>
 using namespace std;
@@ -56,7 +56,8 @@ Noeud* Interpreteur::seqInst() {
   NoeudSeqInst* sequence = new NoeudSeqInst();
   do {
     sequence->ajoute(inst());
-  } while (m_lecteur.getSymbole() == "<VARIABLE>" || m_lecteur.getSymbole() == "si" || m_lecteur.getSymbole() == "tantque" || m_lecteur.getSymbole() == "repeter" || m_lecteur.getSymbole() == "pour");
+  } while (m_lecteur.getSymbole() == "<VARIABLE>" || m_lecteur.getSymbole() == "si" || m_lecteur.getSymbole() == "tantque"
+           || m_lecteur.getSymbole() == "repeter" || m_lecteur.getSymbole() == "pour" || m_lecteur.getSymbole() == "ecrire");
   // Tant que le symbole courant est un début possible d'instruction...
   // Il faut compléter cette condition chaque fois qu'on rajoute une nouvelle instruction
   return sequence;
@@ -77,6 +78,9 @@ Noeud* Interpreteur::inst() {
     return instRepeter();
   else if(m_lecteur.getSymbole() == "pour")
       return instPour();
+  else if(m_lecteur.getSymbole() == "ecrire")
+      return instEcrire();
+
   //Compléter les alternatives chaque fois qu'on rajoute une nouvelle instruction
   else erreur("Instruction incorrecte");
 }
@@ -112,7 +116,7 @@ Noeud* Interpreteur::expression() {
 Noeud* Interpreteur::facteur() {
   // <facteur> ::= <entier> | <variable> | - <facteur> | non <facteur> | ( <expression> )
   Noeud* fact = nullptr;
-  if (m_lecteur.getSymbole() == "<VARIABLE>" || m_lecteur.getSymbole() == "<ENTIER>") {
+  if (m_lecteur.getSymbole() == "<VARIABLE>" || m_lecteur.getSymbole() == "<ENTIER>" || m_lecteur.getSymbole() == "<CHAINE>") {
     fact = m_table.chercheAjoute(m_lecteur.getSymbole()); // on ajoute la variable ou l'entier à la table
     m_lecteur.avancer();
   } else if (m_lecteur.getSymbole() == "-") { // - <facteur>
@@ -207,6 +211,21 @@ Noeud * Interpreteur::instPour() {
     testerEtAvancer("finpour");
 
     return new NoeudInstPour(affect, cond, incrementation, seq);
+}
+
+Noeud * Interpreteur::instEcrire() {
+    NoeudInstEcrire * ecrire = new NoeudInstEcrire();
+
+    testerEtAvancer("ecrire");
+    testerEtAvancer("(");
+    ecrire->ajouter(expression());
+    while(m_lecteur.getSymbole() == ","){
+        testerEtAvancer(",");
+        ecrire->ajouter(expression());
+    }
+    testerEtAvancer(")");
+    testerEtAvancer(";");
+    return ecrire;
 }
 
 Noeud * Interpreteur::instLire() {

@@ -116,6 +116,16 @@ public :
     int executer();
 };
 
+class NoeudInstEcrire : public Noeud {
+private:
+    vector<Noeud*> m_expressions;
+public:
+    NoeudInstEcrire();
+    void ajouter(Noeud* expression);
+    ~NoeudInstEcrire() {};
+    int executer();
+};
+
 class NoeudInstLire : public Noeud {
 private:
     vector<Noeud*>  m_variables;

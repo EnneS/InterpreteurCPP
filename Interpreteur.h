@@ -20,10 +20,7 @@ public:
 	inline const TableSymboles & getTable () const  { return m_table;    } // accesseur	
 	inline Noeud* getArbre () const { return m_arbre; }                    // accesseur
 
-	Noeud* instTantQue();
-	Noeud* instRepeter();
-	Noeud* instPour();
-private:
+	private:
     Lecteur        m_lecteur;  // Le lecteur de symboles utilisé pour analyser le fichier
     TableSymboles  m_table;    // La table des symboles valués
     Noeud*         m_arbre;    // L'arbre abstrait
@@ -37,6 +34,11 @@ private:
     Noeud*  facteur();     //     <facteur> ::= <entier>  |  <variable>  |  - <facteur>  | non <facteur> | ( <expression> )
                            //   <opBinaire> ::= + | - | *  | / | < | > | <= | >= | == | != | et | ou
     Noeud*  instSi();      //      <instSi> ::= si ( <expression> ) <seqInst> finsi
+	Noeud* instTantQue();
+	Noeud* instRepeter();
+	Noeud* instPour();
+	Noeud* instEcrire();
+	// outils pour simplifier l'analyse syntaxique
 	Noeud* 	instLire();    //	 <instLire> ::= lire(<variable> { ,<variable> })
 
 

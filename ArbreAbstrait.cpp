@@ -3,7 +3,8 @@
 #include "Symbole.h"
 #include "SymboleValue.h"
 #include "Exceptions.h"
-
+#include <typeinfo>
+#include <algorithm>
 ////////////////////////////////////////////////////////////////////////////////
 // NoeudSeqInst
 ////////////////////////////////////////////////////////////////////////////////
@@ -92,8 +93,6 @@ void NoeudInstSi::ajouterSequence(Noeud* seq){
     m_sequences.push_back(seq);
 }
 
-
-
 NoeudInstTq::NoeudInstTq(Noeud* condition, Noeud* sequence)
         : m_condition(condition), m_sequence(sequence) {
 }
@@ -121,9 +120,6 @@ NoeudInstPour::NoeudInstPour(Noeud *affectation, Noeud *condition, Noeud *increm
         : m_affectation(affectation), m_condition(condition), m_incrementation(incrementation), m_sequence(sequence) {}
 
 int NoeudInstPour::executer(){
-
-    cout << m_condition->executer();
-
     if(m_incrementation && m_affectation){
         for(m_affectation->executer(); m_condition->executer(); m_incrementation->executer()){
             m_sequence->executer();
@@ -143,6 +139,25 @@ int NoeudInstPour::executer(){
             m_sequence->executer();
         }
     }
+    return 0;
+}
+
+NoeudInstEcrire::NoeudInstEcrire() {}
+
+void NoeudInstEcrire::ajouter(Noeud *expression) {
+    m_expressions.push_back(expression);
+}
+
+int NoeudInstEcrire::executer(){
+     for(auto exp : m_expressions){
+            if((typeid(*exp)) == typeid(SymboleValue) && *((SymboleValue*)exp) == "<CHAINE>"){
+                string str = ((SymboleValue*) exp)->getChaine();
+                str.erase(std::remove(str.begin(), str.end(), '"'), str.end());
+                cout << str;
+            } else {
+                cout << exp->executer();
+            }
+        }
     return 0;
 }
 
