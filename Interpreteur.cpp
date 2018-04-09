@@ -1,4 +1,4 @@
-#include "Interpreteur.h"
+    #include "Interpreteur.h"
 #include <stdlib.h>
 #include <iostream>
 using namespace std;
@@ -207,4 +207,26 @@ Noeud * Interpreteur::instPour() {
     testerEtAvancer("finpour");
 
     return new NoeudInstPour(affect, cond, incrementation, seq);
+}
+
+Noeud * Interpreteur::instLire() {
+
+    testerEtAvancer("lire");
+    testerEtAvancer("(");
+
+    NoeudInstLire* noeud = new NoeudInstLire();
+    tester("<VARIABLE>"); //leve exception sinon variable non reconnue
+    Noeud* var = m_table.chercheAjoute(m_lecteur.getSymbole());
+    noeud->ajouterVariable(var);
+
+    while  (m_lecteur.getSymbole() == ","){
+        testerEtAvancer(",");
+        tester("<VARIABLE>"); //leve exception sinon variable non reconnue
+        Noeud* var = m_table.chercheAjoute(m_lecteur.getSymbole());
+        noeud->ajouterVariable(var);
+    }
+
+    testerEtAvancer(")");
+
+    return noeud;
 }

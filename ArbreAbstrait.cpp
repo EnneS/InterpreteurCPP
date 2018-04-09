@@ -92,6 +92,8 @@ void NoeudInstSi::ajouterSequence(Noeud* seq){
     m_sequences.push_back(seq);
 }
 
+
+
 NoeudInstTq::NoeudInstTq(Noeud* condition, Noeud* sequence)
         : m_condition(condition), m_sequence(sequence) {
 }
@@ -119,6 +121,7 @@ NoeudInstPour::NoeudInstPour(Noeud *affectation, Noeud *condition, Noeud *increm
         : m_affectation(affectation), m_condition(condition), m_incrementation(incrementation), m_sequence(sequence) {}
 
 int NoeudInstPour::executer(){
+
     cout << m_condition->executer();
 
     if(m_incrementation && m_affectation){
@@ -141,4 +144,17 @@ int NoeudInstPour::executer(){
         }
     }
     return 0;
+}
+
+NoeudInstLire::NoeudInstLire () {}
+
+int NoeudInstLire::executer() {
+
+    int var;
+
+    for (auto variable : m_variables){
+        cin >> var;
+        ((SymboleValue*) variable)->setValeur(var);
+    }
+
 }
