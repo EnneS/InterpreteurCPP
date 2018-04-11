@@ -131,4 +131,15 @@ public:
     int executer();
     void traduitEnCPP(ostream& cout, unsigned int indentation) const;
 };
+
+class NoeudInstLire : public Noeud {
+private:
+    vector<Noeud*>  m_variables;
+public:
+    NoeudInstLire();
+    ~NoeudInstLire() {};
+    int executer();
+    void ajouterVariable(Noeud* var);
+
+};
 #endif /* ARBREABSTRAIT_H */

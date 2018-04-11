@@ -57,7 +57,7 @@ Noeud* Interpreteur::seqInst() {
   do {
     sequence->ajoute(inst());
   } while (m_lecteur.getSymbole() == "<VARIABLE>" || m_lecteur.getSymbole() == "si" || m_lecteur.getSymbole() == "tantque"
-           || m_lecteur.getSymbole() == "repeter" || m_lecteur.getSymbole() == "pour" || m_lecteur.getSymbole() == "ecrire");
+           || m_lecteur.getSymbole() == "repeter" || m_lecteur.getSymbole() == "pour" || m_lecteur.getSymbole() == "ecrire" || m_lecteur.getSymbole() == "lire");
   // Tant que le symbole courant est un début possible d'instruction...
   // Il faut compléter cette condition chaque fois qu'on rajoute une nouvelle instruction
   return sequence;
@@ -80,8 +80,8 @@ Noeud* Interpreteur::inst() {
       return instPour();
   else if(m_lecteur.getSymbole() == "ecrire")
       return instEcrire();
-
-  //Compléter les alternatives chaque fois qu'on rajoute une nouvelle instruction
+  else if(m_lecteur.getSymbole() == "lire")
+      return instLire();
   else erreur("Instruction incorrecte");
 }
 
@@ -252,4 +252,29 @@ void Interpreteur::traduitEnCPP(ostream & cout, unsigned int indentation) const 
     // Fin
     cout << setw(4*indentation) << "" << "return 0;" << endl;
     cout << setw(indentation) << "}" << endl;
+}
+
+Noeud * Interpreteur::instLire() {
+
+    testerEtAvancer("lire");
+    testerEtAvancer("(");
+
+    NoeudInstLire* noeud = new NoeudInstLire();
+    tester("<VARIABLE>"); //leve exception sinon variable non reconnue
+    Noeud* var = m_table.chercheAjoute(m_lecteur.getSymbole());
+    noeud->ajouterVariable(var);
+    testerEtAvancer("<VARIABLE>");
+
+    while  (m_lecteur.getSymbole() == ","){
+        testerEtAvancer(",");
+        //tester("<VARIABLE>"); //leve exception sinon variable non reconnue
+        Noeud* var = m_table.chercheAjoute(m_lecteur.getSymbole());
+        noeud->ajouterVariable(var);
+        testerEtAvancer("<VARIABLE>");
+    }
+
+    testerEtAvancer(")");
+    testerEtAvancer(";");
+
+    return noeud;
 }

@@ -288,3 +288,22 @@ void NoeudInstEcrire::traduitEnCPP(ostream &cout, unsigned int indentation) cons
     }
     cout << ";";
 }
+
+
+NoeudInstLire::NoeudInstLire () {}
+
+void NoeudInstLire::ajouterVariable(Noeud *var) {
+    m_variables.push_back(var);
+}
+
+int NoeudInstLire::executer() {
+
+    int var;
+
+    for (auto variable : m_variables){
+        cin >> var;
+        ((SymboleValue*) variable)->setValeur(var);
+    }
+
+    return 0;
+}
