@@ -228,6 +228,31 @@ Noeud * Interpreteur::instEcrire() {
     return ecrire;
 }
 
+Noeud * Interpreteur::instLire() {
+
+    testerEtAvancer("lire");
+    testerEtAvancer("(");
+
+    NoeudInstLire* noeud = new NoeudInstLire();
+    tester("<VARIABLE>"); //leve exception sinon variable non reconnue
+    Noeud* var = m_table.chercheAjoute(m_lecteur.getSymbole());
+    noeud->ajouterVariable(var);
+    testerEtAvancer("<VARIABLE>");
+
+    while  (m_lecteur.getSymbole() == ","){
+        testerEtAvancer(",");
+        //tester("<VARIABLE>"); //leve exception sinon variable non reconnue
+        Noeud* var = m_table.chercheAjoute(m_lecteur.getSymbole());
+        noeud->ajouterVariable(var);
+        testerEtAvancer("<VARIABLE>");
+    }
+
+    testerEtAvancer(")");
+    testerEtAvancer(";");
+
+    return noeud;
+}
+
 // =========================
 // Traduction en C++
 
@@ -252,29 +277,4 @@ void Interpreteur::traduitEnCPP(ostream & cout, unsigned int indentation) const 
     // Fin
     cout << setw(4*indentation) << "" << "return 0;" << endl;
     cout << setw(indentation) << "}" << endl;
-}
-
-Noeud * Interpreteur::instLire() {
-
-    testerEtAvancer("lire");
-    testerEtAvancer("(");
-
-    NoeudInstLire* noeud = new NoeudInstLire();
-    tester("<VARIABLE>"); //leve exception sinon variable non reconnue
-    Noeud* var = m_table.chercheAjoute(m_lecteur.getSymbole());
-    noeud->ajouterVariable(var);
-    testerEtAvancer("<VARIABLE>");
-
-    while  (m_lecteur.getSymbole() == ","){
-        testerEtAvancer(",");
-        //tester("<VARIABLE>"); //leve exception sinon variable non reconnue
-        Noeud* var = m_table.chercheAjoute(m_lecteur.getSymbole());
-        noeud->ajouterVariable(var);
-        testerEtAvancer("<VARIABLE>");
-    }
-
-    testerEtAvancer(")");
-    testerEtAvancer(";");
-
-    return noeud;
 }

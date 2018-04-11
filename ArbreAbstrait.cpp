@@ -179,6 +179,27 @@ int NoeudInstEcrire::executer(){
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// NoeudInstLire
+////////////////////////////////////////////////////////////////////////////////
+NoeudInstLire::NoeudInstLire () {}
+
+void NoeudInstLire::ajouterVariable(Noeud *var) {
+    m_variables.push_back(var);
+}
+
+int NoeudInstLire::executer() {
+
+    int var;
+
+    for (auto variable : m_variables){
+        cin >> var;
+        ((SymboleValue*) variable)->setValeur(var);
+    }
+
+    return 0;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // Traduction en C++
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -290,20 +311,11 @@ void NoeudInstEcrire::traduitEnCPP(ostream &cout, unsigned int indentation) cons
 }
 
 
-NoeudInstLire::NoeudInstLire () {}
-
-void NoeudInstLire::ajouterVariable(Noeud *var) {
-    m_variables.push_back(var);
-}
-
-int NoeudInstLire::executer() {
-
-    int var;
-
-    for (auto variable : m_variables){
-        cin >> var;
-        ((SymboleValue*) variable)->setValeur(var);
+void NoeudInstLire::traduitEnCPP(ostream &cout, unsigned int indentation) const {
+    cout << setw(2*indentation) << "" << "std::cin ";
+    for(Noeud * var : m_variables){
+        cout << "<< ";
+        var->traduitEnCPP(cout, 0);
     }
-
-    return 0;
+    cout << ";";
 }

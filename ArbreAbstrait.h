@@ -140,6 +140,6 @@ public:
     ~NoeudInstLire() {};
     int executer();
     void ajouterVariable(Noeud* var);
-
+    void traduitEnCPP(ostream& cout, unsigned int indentation) const;
 };
 #endif /* ARBREABSTRAIT_H */
