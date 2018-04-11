@@ -227,3 +227,29 @@ Noeud * Interpreteur::instEcrire() {
     testerEtAvancer(";");
     return ecrire;
 }
+
+// =========================
+// Traduction en C++
+
+void Interpreteur::traduitEnCPP(ostream & cout, unsigned int indentation) const {
+    // Includes
+    cout << setw(4*indentation) << "#include <iostream>" << endl;
+
+    // Début de la procédure principale
+    cout << setw(4*indentation) << "int main() {" << endl;
+
+    // On parcourt la table, si on trouve une variable alors il faut la déclarer avant d'écrire le programme !
+    for(int i = 0; i < m_table.getTaille(); i++) {
+        if(m_table[i] == "<VARIABLE>"){
+            cout << setw(4*(indentation+1));
+            cout << "int " << m_table[i].getChaine() << ";" << endl;
+        }
+    }
+
+    // Traduction de l'arbre
+    getArbre()->traduitEnCPP(cout, indentation + 1);
+
+    // Fin
+    cout << setw(4*indentation) << "" << "return 0;" << endl;
+    cout << setw(indentation) << "}" << endl;
+}

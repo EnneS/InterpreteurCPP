@@ -19,6 +19,7 @@ public:
 
 	inline const TableSymboles & getTable () const  { return m_table;    } // accesseur	
 	inline Noeud* getArbre () const { return m_arbre; }                    // accesseur
+	void traduitEnCPP(ostream& cout, unsigned int indentation) const;
 
 	private:
     Lecteur        m_lecteur;  // Le lecteur de symboles utilisé pour analyser le fichier
@@ -38,6 +39,9 @@ public:
 	Noeud* instRepeter();
 	Noeud* instPour();
 	Noeud* instEcrire();
+
+	// Traduction en CPP
+
 	// outils pour simplifier l'analyse syntaxique
     void tester (const string & symboleAttendu) const throw (SyntaxeException);   // Si symbole courant != symboleAttendu, on lève une exception
     void testerEtAvancer(const string & symboleAttendu) throw (SyntaxeException); // Si symbole courant != symboleAttendu, on lève une exception, sinon on avance
