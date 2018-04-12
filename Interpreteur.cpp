@@ -40,15 +40,15 @@ void Interpreteur::erreur(const string & message) const throw (SyntaxeException)
 }
 
 Noeud* Interpreteur::programme() {
-  // <programme> ::= procedure principale() <seqInst> finproc FIN_FICHIER
-  testerEtAvancer("procedure");
-  testerEtAvancer("principale");
-  testerEtAvancer("(");
-  testerEtAvancer(")");
-  Noeud* sequence = seqInst();
-  testerEtAvancer("finproc");
-  tester("<FINDEFICHIER>");
-  return sequence;
+    // <programme> ::= procedure princip  ale() <seqInst> finproc FIN_FICHIER
+    testerEtAvancer("procedure");
+    testerEtAvancer("principale");
+    testerEtAvancer("(");
+    testerEtAvancer(")");
+    Noeud* sequence = seqInst();
+    testerEtAvancer("finproc");
+    tester("<FINDEFICHIER>");
+    return sequence;
 }
 
 Noeud* Interpreteur::seqInst() {
@@ -65,24 +65,37 @@ Noeud* Interpreteur::seqInst() {
 
 Noeud* Interpreteur::inst() {
   // <inst> ::= <affectation>  ; | <instSi>
-  if (m_lecteur.getSymbole() == "<VARIABLE>") {
-    Noeud *affect = affectation();
-    testerEtAvancer(";");
-    return affect;
-  }
-  else if (m_lecteur.getSymbole() == "si")
-    return instSi();
-  else if (m_lecteur.getSymbole() == "tantque")
-    return instTantQue();
-  else if(m_lecteur.getSymbole() == "repeter")
-    return instRepeter();
-  else if(m_lecteur.getSymbole() == "pour")
-      return instPour();
-  else if(m_lecteur.getSymbole() == "ecrire")
-      return instEcrire();
-  else if(m_lecteur.getSymbole() == "lire")
-      return instLire();
-  else erreur("Instruction incorrecte");
+
+    // Lecture du symbole courant en récupérant l'exception si il y a.
+    try{
+        if (m_lecteur.getSymbole() == "<VARIABLE>") {
+            Noeud *affect = affectation();
+            testerEtAvancer(";");
+            return affect;
+        }
+        else if (m_lecteur.getSymbole() == "si")
+            return instSi();
+        else if (m_lecteur.getSymbole() == "tantque")
+            return instTantQue();
+        else if(m_lecteur.getSymbole() == "repeter")
+            return instRepeter();
+        else if(m_lecteur.getSymbole() == "pour")
+            return instPour();
+        else if(m_lecteur.getSymbole() == "ecrire")
+            return instEcrire();
+        else if(m_lecteur.getSymbole() == "lire")
+            return instLire();
+        else erreur("Instruction incorrecte");
+    } catch(SyntaxeException const &e){                 // On récupère l'exception
+        cout << e.what() << endl;                       // On affiche le message d'erreur de l'exception
+        // Tant que le symbole courant n'est pas une instruction ou la fin du programme alors on poursuit la lecture de celui-ci.
+        // Cela permet de poursuivre l'analyse après récupération d'une erreur et de traiter entièrement toute les erreurs du programme.
+        while(m_lecteur.getSymbole() != "<VARIABLE>" && m_lecteur.getSymbole() != "si" && m_lecteur.getSymbole() != "tantque"
+              && m_lecteur.getSymbole() != "repeter" && m_lecteur.getSymbole() != "pour" && m_lecteur.getSymbole() != "ecrire" && m_lecteur.getSymbole() != "lire"
+                && m_lecteur.getSymbole() != "<FINDEFICHIER>"){
+            m_lecteur.avancer();
+        }
+    }
 }
 
 Noeud* Interpreteur::affectation() {

@@ -174,7 +174,8 @@ int NoeudInstEcrire::executer(){
             } else {
                 cout << exp->executer();
             }
-        }
+     }
+    cout << endl;
     return 0;
 }
 
