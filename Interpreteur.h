@@ -31,9 +31,14 @@ public:
     Noeud*  seqInst();	   //     <seqInst> ::= <inst> { <inst> }
     Noeud*  inst();	       //        <inst> ::= <affectation> ; | <instSi>
     Noeud*  affectation(); // <affectation> ::= <variable> = <expression> 
-    Noeud*  expression();  //  <expression> ::= <facteur> { <opBinaire> <facteur> }
-    Noeud*  facteur();     //     <facteur> ::= <entier>  |  <variable>  |  - <facteur>  | non <facteur> | ( <expression> )
-                           //   <opBinaire> ::= + | - | *  | / | < | > | <= | >= | == | != | et | ou
+    Noeud*  expression();  //  <expression> ::= <terme> { + <terme> | - <terme> }
+    Noeud*  facteur();     //     <facteur> ::= <entier>  |  <variable>  |  - <expBool>  | non <expBool> | ( <expBool> )
+    Noeud* terme();        //       <terme> ::= <facteur> { * <facteur> | / <facteur> }
+    Noeud* expBool();      //     <expBool> ::= <relationEt> { ou <relationEt> }
+    Noeud* relationEt();   //  <relationEt> ::= <relation> { et <relation> }
+    Noeud* relation();     //    <relation> ::= <expression> { <opRel> <expression> }
+    bool opRel();        //       <opRel> ::= == | != | < | <= | > | >=
+
     Noeud*  instSi();      //      <instSi> ::= si ( <expression> ) <seqInst> finsi
 	Noeud* instTantQue();
 	Noeud* instRepeter();

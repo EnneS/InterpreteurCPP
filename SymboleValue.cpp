@@ -7,6 +7,9 @@ Symbole(s.getChaine()) {
   if (s == "<ENTIER>") {
     m_valeur = atoi(s.getChaine().c_str()); // c_str convertit une string en char*
     m_defini = true;
+  } else if(s == "<CHAINE>"){ // Si le symbole est une chaine
+    m_chaine = s.getChaine(); // On récupère le contenu de cette chaine
+    m_defini = true;
   } else {
     m_defini = false;
   }
@@ -19,7 +22,8 @@ int SymboleValue::executer() {
 
 ostream & operator<<(ostream & cout, const SymboleValue & symbole) {
   cout << (Symbole) symbole << "\t\t - Valeur=";
-  if (symbole.m_defini) cout << symbole.m_valeur << " ";
+  if (symbole.m_defini && symbole.m_chaine!= "") cout << symbole.m_chaine << " ";
+  else if(symbole.m_defini) cout << symbole.m_valeur << " ";
   else cout << "indefinie ";
   return cout;
 }

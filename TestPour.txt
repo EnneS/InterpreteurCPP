@@ -1,0 +1,18 @@
+# Test du pour
+# Résultat attendu :
+# Affichage de : Compteur de 1 à 5
+# Affichage de : 1 [a = 1]
+# Affichage de : 2 [a = 2]
+# Affichage de : 3 [a = 3]
+# Affichage de : 4 [a = 4]
+# Affichage de : 5 [a = 5]
+# Affichage de : Fin du test
+
+procedure principale()
+    ecrire("Compteur de 1 à 5");
+    pour(a = 1; a <= 5; a = a + 1)
+        ecrire(a);
+    finpour
+    ecrire("Fin du test");
+finproc
+# Commentaire Final

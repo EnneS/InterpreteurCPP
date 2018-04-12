@@ -1,0 +1,29 @@
+# Test du lire
+# Résultat attendu :
+# Affichage de : Valeur de a : 0
+# Affichage de : Lecture de a :
+# Initialisation de a
+# Affichage de : a vaut désormais : [valeur rentrée pour a]
+# Affichage de : Lecture de j puis k
+# Initialisation de j
+# Initialisation de k
+# Affichage de : Valeur de j : [valeur rentrée pour j]
+# Affichage de : Valeur de k : [valeur rentrée pour k]
+# Affichage de : Fin du test
+procedure principale()
+    a = 0;
+
+    ecrire("Valeur de a : ", a);
+    ecrire("Lecture de a :");
+    lire(a);
+    ecrire("a vaut désormais : ", a);
+
+    # Lecture de plusieurs variables à la fois
+    ecrire("Lecture de j puis k");
+    lire(j, k);
+    ecrire("Valeur de j : ", j);
+    ecrire("Valeur de k : ", k);
+    ecrire("Fin du test");
+
+finproc
+# Commentaire Final

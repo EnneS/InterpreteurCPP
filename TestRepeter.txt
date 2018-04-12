@@ -1,0 +1,20 @@
+# Test du repeter
+# Résultat attendu :
+# Affichage de : Compteur de 1 à 5
+# Affichage de : 1
+# Affichage de : 2
+# Affichage de : 3
+# Affichage de : 4
+# Affichage de : 5
+# Affichage de : Fin du test
+
+procedure principale()
+    i = 1;
+    ecrire("Compteur de 1 à 5");
+    repeter
+        ecrire(i);
+        i = i + 1;
+    jusqua(i>5)
+    ecrire("Fin du test");
+finproc
+# Commentaire Final

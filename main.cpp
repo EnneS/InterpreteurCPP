@@ -2,6 +2,7 @@
 using namespace std;
 #include "Interpreteur.h"
 #include "Exceptions.h"
+#include <algorithm>
 
 int main(int argc, char* argv[]) {
     string nomFich;
@@ -25,10 +26,19 @@ int main(int argc, char* argv[]) {
         // Et on vérifie qu'il a fonctionné en regardant comment il a modifié la table des symboles
         cout << endl << "================ Table des symboles apres exécution : " << interpreteur.getTable();
 
-        ostream * fichierSortie = &cout;
         if(interpreteur.getArbre()!= nullptr){
-            cout << endl << "================ Traduction en C++ : " << endl;
-            interpreteur.traduitEnCPP(*fichierSortie, 1);
+            // Définition du nom du fichier (enlever l'extension.., les slashs ...)
+            size_t lastindexExt = nomFich.find_last_of("."); // extension
+            string nomFichTrad = nomFich.substr(0, lastindexExt);
+            nomFichTrad.erase(std::remove(nomFichTrad.begin(), nomFichTrad.end(), '.'), nomFichTrad.end());
+            nomFichTrad.erase(std::remove(nomFichTrad.begin(), nomFichTrad.end(), '/'), nomFichTrad.end());
+            nomFichTrad = nomFichTrad + string(".cpp"); // Et rajout de l'extension .cpp
+
+            ofstream coutF (nomFichTrad); // Sortie avec le nom de fichier .cpp
+
+            cout << endl << "================ Traduction en C++ ..." << endl;
+            //interpreteur.traduitEnCPP(coutF, 1);
+            cout << "================ Traduction récupérée dans le fichier " << nomFichTrad;
         }
 
     } catch (InterpreteurException & e) {

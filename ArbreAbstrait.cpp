@@ -14,8 +14,9 @@ NoeudSeqInst::NoeudSeqInst() : m_instructions() {
 
 int NoeudSeqInst::executer() {
   for (unsigned int i = 0; i < m_instructions.size(); i++)
-    m_instructions[i]->executer(); // on exécute chaque instruction de la séquence
-  return 0; // La valeur renvoyée ne représente rien !
+      m_instructions[i]->executer(); // on exécute chaque instruction de la séquence
+    return 0; // La valeur renvoyée ne représente rien !
+
 }
 
 void NoeudSeqInst::ajoute(Noeud* instruction) {
@@ -168,7 +169,7 @@ void NoeudInstEcrire::ajouter(Noeud *expression) {
 int NoeudInstEcrire::executer(){
      for(auto exp : m_expressions){
             if((typeid(*exp)) == typeid(SymboleValue) && *((SymboleValue*)exp) == "<CHAINE>"){
-                string str = ((SymboleValue*) exp)->getChaine();
+                string str = (((SymboleValue*) exp)->getChaine());
                 str.erase(std::remove(str.begin(), str.end(), '"'), str.end());
                 cout << str;
             } else {

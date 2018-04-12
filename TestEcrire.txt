@@ -1,0 +1,14 @@
+# Test du ecrire
+# Résultat attendu :
+# Affichage de : i = 1
+# Affichage de : i+j = 3
+# Affichage de : Fin du test
+
+procedure principale()
+    i = 1;
+    j = 2;
+    ecrire("i = ", i);
+    ecrire("i+j = ", i+j);
+    ecrire("Fin du test");
+finproc
+# Commentaire Final

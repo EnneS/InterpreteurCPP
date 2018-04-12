@@ -22,7 +22,7 @@ public:
 private:
 	  bool m_defini;	// indique si la valeur du symbole est définie
 	  int  m_valeur;	// valeur du symbole si elle est définie, zéro sinon
-
+	  string m_chaine;		// afin d'avoir des chaines en tant que variable
 };
 
 #endif /* SYMBOLEVALUE_H */

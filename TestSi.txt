@@ -1,0 +1,28 @@
+# Test du si
+# Résultat attendu :
+# Affichage de : Valeur de a = 3
+# Affichage de : Valeur de b = 3
+# Affichage de : Fin du test
+
+procedure principale()
+    a = 7;
+    si(a > 10)
+        a = 1;
+    sinonsi (a < 5)
+        a = 2;
+    sinon
+        a = 3;
+    finsi
+
+    b = 1;
+    si(b > 10)
+        b = 999;
+    sinonsi(b < 5)
+        b = 3;
+    finsi
+
+    ecrire("Valeur de a = ", a);
+    ecrire("Valeur de b = ", b);
+    ecrire("Fin du test");
+finproc
+# Commentaire Final
