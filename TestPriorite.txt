@@ -1,0 +1,16 @@
+# Test du lire
+# Résultat attendu :
+# a = 9
+# Affichage de : 4 +1 * 5 = 9
+# a = 4
+# Affichage de : 10 / 5 + 2 = 4
+# Affichage de : Fin du test
+
+procedure principale()
+    a = 4 + 1 * 5;
+    ecrire("4 + 1 * 5 = ", a);
+    a = 10 / 5 + 2;
+    ecrire("10 / 5 + 2 = ", a);
+    ecrire("Fin du test");
+finproc
+# Commentaire Final

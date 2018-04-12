@@ -22,8 +22,10 @@ int SymboleValue::executer() {
 
 ostream & operator<<(ostream & cout, const SymboleValue & symbole) {
   cout << (Symbole) symbole << "\t\t - Valeur=";
-  if (symbole.m_defini && symbole.m_chaine!= "") cout << symbole.m_chaine << " ";
-  else if(symbole.m_defini) cout << symbole.m_valeur << " ";
+  if (symbole.m_defini && symbole.m_chaine!= "") cout << symbole.m_chaine << " "; // Si le symbole est défini et que la chaine n'est pas vide alors on affiche la chaine
+                                                                                  // Ca marche mais à moitié, quand on affecte une chaine à une variable, on récupère sa valeur en int
+                                                                                  // au lieu d'avoir la string...
+  else if(symbole.m_defini) cout << symbole.m_valeur << " "; // Sinon si le symbole est défini alors ce sera un entier, on affiche la valeur
   else cout << "indefinie ";
   return cout;
 }

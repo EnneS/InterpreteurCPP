@@ -1,0 +1,10 @@
+# Test de la récupération des erreurs
+procedure principale()
+    a = 0
+    pour(a = 5; a < 10; a = a + 1)
+        ecrire(a)
+    finpour
+
+    b = 9001
+finproc
+# Commentaire Final
