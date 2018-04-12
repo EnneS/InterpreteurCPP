@@ -232,34 +232,32 @@ void NoeudOperateurBinaire::traduitEnCPP(ostream &cout, unsigned int indentation
 
 void NoeudInstSi::traduitEnCPP(ostream &cout, unsigned int indentation) const {
 
-    cout << setw(4*indentation);
+    cout << setw(3*indentation+1);
 
     // Première condition & séquence
     cout << "if(";
     m_conditions[0]->traduitEnCPP(cout, 0);
     cout << ") {" << endl;
     m_sequences[0]->traduitEnCPP(cout, indentation+1);
-    cout << endl;
 
     // Traduction des else if
     int i = 1;
     while(i < m_conditions.size()){
-        cout << setw(4*indentation);
-        cout << " } else if(";
+            cout << setw(indentation+1);
+        cout << "" << " } else if(";
         m_conditions[i]->traduitEnCPP(cout, 0);
         cout << ") {" << endl;
         m_sequences[i]->traduitEnCPP(cout, indentation+1);
-        cout << endl;
+        i++;
     }
-    cout << setw(4*indentation);
+    cout << setw(2*indentation+1);
     cout << " }";
 
     // Traduction du else s'il existe
     if(m_sequences.size() > m_conditions.size()) {
         cout << " else {" << endl;
         m_sequences[i]->traduitEnCPP(cout, indentation+1);
-        cout << endl;
-        cout << setw(4*indentation);
+        cout << setw(2*indentation+1);
         cout << "}";
     }
 }
