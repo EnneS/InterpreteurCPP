@@ -1,0 +1,22 @@
+# Test de la post Increm/Désincrem
+# Résultat attendu :
+# Affichage de : 0
+# Affichage de : 1
+# Affichage de : 2
+# Affichage de : val de a : 3
+# Affichage de : 3
+# Affichage de : 2
+# Affichage de : 1
+# Affichage de : 0
+
+procedure principale()
+    a = 0;
+    pour(; a < 3; a++)
+        ecrire(a);
+    finpour
+    ecrire("val de a : ", a);
+    pour(; a >= 0; a--)
+        ecrire(a);
+    finpour
+finproc
+# Commentaire Final

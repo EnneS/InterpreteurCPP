@@ -103,9 +103,22 @@ Noeud* Interpreteur::affectation() {
   tester("<VARIABLE>");
   Noeud* var = m_table.chercheAjoute(m_lecteur.getSymbole()); // La variable est ajoutée à la table eton la mémorise
   m_lecteur.avancer();
-  testerEtAvancer("=");
-  Noeud* exp = expBool();             // On mémorise l'expression trouvée
-  return new NoeudAffectation(var, exp); // On renvoie un noeud affectation
+    if(m_lecteur.getSymbole() == "++"){ // Post increm
+        m_lecteur.avancer();
+        Noeud* postIncrem = m_table.chercheAjoute(Symbole("1")); // On la valeur 1 comme facteur
+
+        return new NoeudAffectation(var, new NoeudOperateurBinaire(Symbole("+"), var, postIncrem)); // La post incrémentation est une affectation de la variable
+                                                                                                    // et d'une opération d'addition (variable+1)
+    } else if(m_lecteur.getSymbole() == "--"){ // Post désincrem
+        m_lecteur.avancer();
+        Noeud* postDesincrem = m_table.chercheAjoute(Symbole("1"));
+
+        return new NoeudAffectation(var, new NoeudOperateurBinaire(Symbole("-"), var, postDesincrem)); // Idem sauf qu'il s'agit d'une soustraction au lieu d'une addition. (var - 1)
+    } else if(m_lecteur.getSymbole() == "=") {
+        testerEtAvancer("=");
+        Noeud* exp = expBool();
+        return new NoeudAffectation(var, exp); // On renvoie un noeud affectation
+    }
 }
 
 Noeud* Interpreteur::expression() {
