@@ -44,6 +44,7 @@ public:
 	Noeud* instRepeter();
 	Noeud* instPour();
 	Noeud* instEcrire();
+    Noeud* instSelon();
 
 	// Traduction en CPP
 

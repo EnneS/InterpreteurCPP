@@ -202,6 +202,36 @@ int NoeudInstLire::executer() {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// NoeudInstSelon
+////////////////////////////////////////////////////////////////////////////////
+NoeudInstSelon::NoeudInstSelon(Noeud* var) :
+    m_var(var) {};
+
+void NoeudInstSelon::ajouterInstruction(Noeud* seqInst) {
+    m_instructions.push_back(seqInst);
+}
+void NoeudInstSelon::ajouterEntier(Noeud* entier) {
+    m_entiers.push_back(entier);
+}
+
+
+int NoeudInstSelon::executer() {
+
+    int i = 0;
+
+    for (auto var : m_entiers) {
+
+        if (var == m_var){
+            m_instructions[i]->executer();
+        }
+
+        i++;
+    }
+
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
 // Traduction en C++
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -318,4 +348,8 @@ void NoeudInstLire::traduitEnCPP(ostream &cout, unsigned int indentation) const 
         var->traduitEnCPP(cout, 0);
     }
     cout << ";";
+}
+
+void NoeudInstSelon::traduitEnCPP(ostream &cout, unsigned int indentation) const {
+
 }

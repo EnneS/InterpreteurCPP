@@ -56,7 +56,7 @@ Noeud* Interpreteur::seqInst() {
   NoeudSeqInst* sequence = new NoeudSeqInst();
   do {
     sequence->ajoute(inst());
-  } while (m_lecteur.getSymbole() == "<VARIABLE>" || m_lecteur.getSymbole() == "si" || m_lecteur.getSymbole() == "tantque"
+  } while (m_lecteur.getSymbole() == "<VARIABLE>" || m_lecteur.getSymbole() == "si" || m_lecteur.getSymbole() == "tantque" || m_lecteur.getSymbole() == "selon"
            || m_lecteur.getSymbole() == "repeter" || m_lecteur.getSymbole() == "pour" || m_lecteur.getSymbole() == "ecrire" || m_lecteur.getSymbole() == "lire");
   // Tant que le symbole courant est un début possible d'instruction...
   // Il faut compléter cette condition chaque fois qu'on rajoute une nouvelle instruction
@@ -90,7 +90,7 @@ Noeud* Interpreteur::inst() {
         cout << e.what() << endl;                       // On affiche le message d'erreur de l'exception
         // Tant que le symbole courant n'est pas une instruction ou la fin du programme alors on poursuit la lecture de celui-ci.
         // Cela permet de poursuivre l'analyse après récupération d'une erreur et de traiter entièrement toute les erreurs du programme.
-        while(m_lecteur.getSymbole() != "<VARIABLE>" && m_lecteur.getSymbole() != "si" && m_lecteur.getSymbole() != "tantque"
+        while(m_lecteur.getSymbole() != "<VARIABLE>" && m_lecteur.getSymbole() != "si" && m_lecteur.getSymbole() != "tantque" && m_lecteur.getSymbole() != "selon"
               && m_lecteur.getSymbole() != "repeter" && m_lecteur.getSymbole() != "pour" && m_lecteur.getSymbole() != "ecrire" && m_lecteur.getSymbole() != "lire"
                 && m_lecteur.getSymbole() != "<FINDEFICHIER>"){
             m_lecteur.avancer();
@@ -331,6 +331,47 @@ Noeud * Interpreteur::instLire() {
     testerEtAvancer(";");
 
     return noeud;
+}
+
+Noeud * Interpreteur::instSelon() {
+
+    testerEtAvancer("selon");
+    testerEtAvancer("(");
+    tester("<VARIABLE>");
+    Noeud* var = m_table.chercheAjoute(m_lecteur.getSymbole());
+    NoeudInstSelon* noeud = new NoeudInstSelon(var);
+    testerEtAvancer("<VARIABLE>");
+    testerEtAvancer(")");
+
+    testerEtAvancer("cas");
+    if (m_lecteur.getSymbole() == "<ENTIER>") {
+        Noeud* entier = m_table.chercheAjoute(m_lecteur.getSymbole());
+        noeud->ajouterEntier(entier);
+    };
+    m_lecteur.avancer();
+    testerEtAvancer(":");
+    Noeud* sequence = seqInst();
+    noeud->ajouterInstruction(sequence);
+
+    while (m_lecteur.getSymbole() == "cas"){
+        testerEtAvancer("cas");
+        if (m_lecteur.getSymbole() == "<ENTIER>") {
+            Noeud* entier = m_table.chercheAjoute(m_lecteur.getSymbole());
+            noeud->ajouterEntier(entier);
+        };
+        m_lecteur.avancer();
+        testerEtAvancer(":");
+        Noeud* sequence = seqInst();
+        noeud->ajouterInstruction(sequence);
+    }
+
+    testerEtAvancer("defaut");
+    testerEtAvancer(":");
+    sequence = seqInst();
+    noeud->ajouterInstruction(sequence);
+
+    return noeud;
+
 }
 
 // =========================

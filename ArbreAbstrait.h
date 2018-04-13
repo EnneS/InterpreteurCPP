@@ -142,4 +142,18 @@ public:
     void ajouterVariable(Noeud* var);
     void traduitEnCPP(ostream& cout, unsigned int indentation) const;
 };
+
+class NoeudInstSelon : public Noeud {
+private:
+    vector<Noeud*> m_instructions;
+    vector<Noeud*> m_entiers;
+    Noeud* m_var;
+public:
+    NoeudInstSelon(Noeud* var);
+    ~NouedInstSelon() {};
+    int executer();
+    void ajouterInstruction(Noeud* seqInst);
+    void ajouterEntier(Noeud* entier);
+    void traduitEnCPP(ostream& cout, unsigned int indentation) const;
+};
 #endif /* ARBREABSTRAIT_H */
