@@ -150,7 +150,7 @@ private:
     Noeud* m_var;
 public:
     NoeudInstSelon(Noeud* var);
-    ~NouedInstSelon() {};
+    ~NoeudInstSelon() {};
     int executer();
     void ajouterInstruction(Noeud* seqInst);
     void ajouterEntier(Noeud* entier);

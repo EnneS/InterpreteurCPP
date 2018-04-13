@@ -37,7 +37,7 @@ int main(int argc, char* argv[]) {
             ofstream coutF (nomFichTrad); // Sortie avec le nom de fichier .cpp
 
             cout << endl << "================ Traduction en C++ ..." << endl;
-            //interpreteur.traduitEnCPP(coutF, 1);
+            interpreteur.traduitEnCPP(coutF, 1);
             cout << "================ Traduction récupérée dans le fichier " << nomFichTrad;
         }
 

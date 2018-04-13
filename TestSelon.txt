@@ -1,0 +1,29 @@
+# Test du selon
+# Résultat attendu :
+# Affichage de : i vaut 0
+# Affichage de : a ne vaut ni 5 ni 7
+# Affichage de : Fin du test
+
+procedure principale()
+    i = 0;
+    selon (i)
+        cas 0 : ecrire("i vaut 0");
+        cas 1 : ecrire("i vaut 1");
+    finselon
+
+    a = 9;
+    selon(a)
+        cas 5 : ecrire("a vaut 5");
+        cas 7 : ecrire("a vaut 7");
+        defaut : ecrire("a ne vaut ni 5 ni 7");
+    finselon
+
+    b = 4;
+    selon (b)
+        cas 1 : ecrire("b vaut 1");
+        cas 78 : ecrire("b vaut beaucoup");
+    finselon
+
+    ecrire("Fin du test");
+finproc
+# Commentaire Final

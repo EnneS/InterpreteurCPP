@@ -85,13 +85,15 @@ Noeud* Interpreteur::inst() {
             return instEcrire();
         else if(m_lecteur.getSymbole() == "lire")
             return instLire();
+        else if(m_lecteur.getSymbole() == "selon")
+            return instSelon();
         else erreur("Instruction incorrecte");
     } catch(SyntaxeException const &e){                 // On récupère l'exception
         cout << e.what() << endl;                       // On affiche le message d'erreur de l'exception
         // Tant que le symbole courant n'est pas une instruction ou la fin du programme alors on poursuit la lecture de celui-ci.
         // Cela permet de poursuivre l'analyse après récupération d'une erreur et de traiter entièrement toute les erreurs du programme.
-        while(m_lecteur.getSymbole() != "<VARIABLE>" && m_lecteur.getSymbole() != "si" && m_lecteur.getSymbole() != "tantque" && m_lecteur.getSymbole() != "selon"
-              && m_lecteur.getSymbole() != "repeter" && m_lecteur.getSymbole() != "pour" && m_lecteur.getSymbole() != "ecrire" && m_lecteur.getSymbole() != "lire"
+        while(m_lecteur.getSymbole() != "<VARIABLE>" && m_lecteur.getSymbole() != "si" && m_lecteur.getSymbole() != "tantque" && m_lecteur.getSymbole() != "repeter"
+              && m_lecteur.getSymbole() != "selon" && m_lecteur.getSymbole() != "pour" && m_lecteur.getSymbole() != "ecrire" && m_lecteur.getSymbole() != "lire"
                 && m_lecteur.getSymbole() != "<FINDEFICHIER>"){
             m_lecteur.avancer();
         }
@@ -340,36 +342,41 @@ Noeud * Interpreteur::instSelon() {
     tester("<VARIABLE>");
     Noeud* var = m_table.chercheAjoute(m_lecteur.getSymbole());
     NoeudInstSelon* noeud = new NoeudInstSelon(var);
-    testerEtAvancer("<VARIABLE>");
+    m_lecteur.avancer();
     testerEtAvancer(")");
 
+    // Premier cas (obligatoire)
     testerEtAvancer("cas");
-    if (m_lecteur.getSymbole() == "<ENTIER>") {
-        Noeud* entier = m_table.chercheAjoute(m_lecteur.getSymbole());
-        noeud->ajouterEntier(entier);
-    };
+    tester("<ENTIER>");
+    Noeud* entier = m_table.chercheAjoute(m_lecteur.getSymbole());
+    noeud->ajouterEntier(entier);
     m_lecteur.avancer();
     testerEtAvancer(":");
     Noeud* sequence = seqInst();
     noeud->ajouterInstruction(sequence);
 
+    // Cas optionnels
+    // Tant qu'il y a de cas on ajoute un cas
     while (m_lecteur.getSymbole() == "cas"){
         testerEtAvancer("cas");
-        if (m_lecteur.getSymbole() == "<ENTIER>") {
-            Noeud* entier = m_table.chercheAjoute(m_lecteur.getSymbole());
-            noeud->ajouterEntier(entier);
-        };
+        tester("<ENTIER>");
+        Noeud* entier = m_table.chercheAjoute(m_lecteur.getSymbole());
+        noeud->ajouterEntier(entier);
         m_lecteur.avancer();
         testerEtAvancer(":");
         Noeud* sequence = seqInst();
         noeud->ajouterInstruction(sequence);
     }
 
-    testerEtAvancer("defaut");
-    testerEtAvancer(":");
-    sequence = seqInst();
-    noeud->ajouterInstruction(sequence);
+    // S'il y a un cas "defaut"
+    if(m_lecteur.getSymbole() == "defaut") {
+        testerEtAvancer("defaut");
+        testerEtAvancer(":");
+        sequence = seqInst();
+        noeud->ajouterInstruction(sequence);
+    }
 
+    testerEtAvancer("finselon");
     return noeud;
 
 }

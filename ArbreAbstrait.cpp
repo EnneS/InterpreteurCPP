@@ -216,18 +216,22 @@ void NoeudInstSelon::ajouterEntier(Noeud* entier) {
 
 
 int NoeudInstSelon::executer() {
-
     int i = 0;
-
-    for (auto var : m_entiers) {
-
-        if (var == m_var){
+    bool executed = false;
+    while (i < m_entiers.size() && !executed){
+        if(m_entiers[i]->executer() == m_var->executer()){
             m_instructions[i]->executer();
+            executed = true;
         }
-
         i++;
     }
 
+    cout<<""; //test
+    if(m_instructions.size() > m_entiers.size() && !executed){
+        m_instructions[i]->executer();
+    }
+
+    return 0;
 }
 
 
@@ -351,5 +355,24 @@ void NoeudInstLire::traduitEnCPP(ostream &cout, unsigned int indentation) const 
 }
 
 void NoeudInstSelon::traduitEnCPP(ostream &cout, unsigned int indentation) const {
+    cout << setw(2*indentation) << "" << "switch (";
+    m_var->traduitEnCPP(cout, indentation);
+    cout << ") {" << endl;
+    int i = 0;
+    while(i < m_entiers.size()){
+        cout << setw(2*(indentation+1)) << "" << "case ";
+        m_entiers[i]->traduitEnCPP(cout, 0);
+        cout << " : ";
+        cout << endl;
+        m_instructions[i]->traduitEnCPP(cout, indentation+2);
+        cout << setw(2*(indentation+2)) << "" ;
+        cout << "break;" << endl;
+        i++;
+    }
 
+    if(m_entiers.size() < m_instructions.size()){
+        cout << setw(2*(indentation+1)) << "" << "default :" << endl;
+        m_instructions[i]->traduitEnCPP(cout, indentation+2);
+    }
+    cout << setw(2*indentation) << "" << "}";
 }
